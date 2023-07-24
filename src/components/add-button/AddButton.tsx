@@ -10,9 +10,9 @@ const AddButton: React.FC = () => {
 	const addHandler = () => {
 		const note: INote = {
 			id: Date.now(),
-			topic: 'Testing topic',
-			body: 'Somebody once told the world is gonna roll me',
-			tags: ['shrek', 'song', 'test'],
+			topic: 'Testing topic 3',
+			body: 'I need to go to the shop today',
+			tags: ['shop', 'store', 'money'],
 		};
 		dispatch(addNote(note));
 	};

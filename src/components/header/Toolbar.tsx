@@ -1,39 +1,36 @@
-import { FC } from 'react';
-import { Toolbar, styled, Stack } from '@mui/material';
-import SearchInput from '../search-input/SearchInput';
+import { Toolbar, styled, Stack, Button } from '@mui/material';
 import AddButton from '../add-button/AddButton';
 import ClearButton from '../clear-button/ClearButton';
+import SearchInput from '../search-input/SearchInput';
 
-const StyledBar = styled(Toolbar)((props) => ({
-	width: '100%',
-	backgroundColor: 'white',
-	position: 'absolute',
-	bottom: 'calc(100% + 20px)',
+const StyledControls = styled(Stack)(({ theme }) => ({
+	position: 'fixed',
 	left: '50%',
+	bottom: '20px',
 	transform: 'translateX(-50%)',
-	borderRadius: '7px',
+	backgroundColor: 'white',
 	boxShadow: '0px 0px 6px -2px rgba(0, 0, 0, 0.2)',
-	[props.theme.breakpoints.down('lg')]: {
-		width: 'calc(100% - 68px)',
-		bottom: 'calc(100% + 10px)',
+	padding: '10px 20px',
+	borderRadius: '10px',
+	[theme.breakpoints.down('md')]: {
+		width: '100%',
+		borderRadius: '0',
+		bottom: 0,
 	},
 }));
 
-const StyledControls = styled(Stack)({
-	position: 'absolute',
-	right: 0,
-	bottom: 'calc(100% + 20px)',
-});
-
-const StyledToolbar: FC = () => {
+const StyledToolbar: React.FC = () => {
 	return (
-		<StyledBar>
-			<StyledControls direction='column' spacing={1}>
+		<Toolbar disableGutters>
+			<SearchInput />
+			<Button variant='contained' size='large' sx={{ ml: '20px' }}>
+				Очистить
+			</Button>
+			<StyledControls direction='row' justifyContent='center' spacing={2}>
 				<AddButton />
 				<ClearButton />
 			</StyledControls>
-			<SearchInput />
-		</StyledBar>
+		</Toolbar>
 	);
 };
 

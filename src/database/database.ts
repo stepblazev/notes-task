@@ -23,31 +23,38 @@ export default class Database {
 		});
 	}
 
-	static async getSingle(id: number): Promise<INote | undefined> {
+	public static async getSingle(id: number): Promise<INote | undefined> {
 		const db = await this.init();
 		const tx = db.transaction('notesStore', 'readonly');
 		const store = tx.objectStore('notesStore');
 		return store.get(id);
 	}
 
-	static async getAll(): Promise<INote[]> {
+	public static async getAll(): Promise<INote[]> {
 		const db = await this.init();
 		const tx = db.transaction('notesStore', 'readonly');
 		const store = tx.objectStore('notesStore');
 		return store.getAll();
 	}
 
-	static async create(item: INote): Promise<void> {
+	public static async create(item: INote): Promise<void> {
 		const db = await this.init();
 		const tx = db.transaction('notesStore', 'readwrite');
 		const store = tx.objectStore('notesStore');
 		await store.add(item);
 	}
 
-	static async update(item: INote): Promise<void> {
+	public static async update(item: INote): Promise<void> {
 		const db = await this.init();
 		const tx = db.transaction('notesStore', 'readwrite');
 		const store = tx.objectStore('notesStore');
 		await store.put(item);
+	}
+
+	public static async clear(): Promise<void> {
+		const db = await this.init();
+		const tx = db.transaction('notesStore', 'readwrite');
+		const store = tx.objectStore('notesStore');
+		await store.clear();
 	}
 }

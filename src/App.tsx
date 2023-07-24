@@ -25,7 +25,7 @@ const App: React.FC = () => {
 	return (
 		<ThemeProvider theme={theme}>
 			<Header />
-			<Container sx={{ padding: 1, pb: '100px' }}>
+			<Container maxWidth='md' sx={{ padding: 1, pb: '120px' }}>
 				{isNotesLoading ? (
 					<Box sx={{ display: 'flex', justifyContent: 'center' }}>
 						<CircularProgress size={70} />

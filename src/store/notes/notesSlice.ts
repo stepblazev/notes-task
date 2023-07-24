@@ -38,6 +38,7 @@ export const fetchNotes = () => async (dispatch: AppDispatch) => {
 	try {
 		dispatch(notesSlice.actions.fetchNotes());
 		const response = await Database.getAll();
+		response.reverse();
 		dispatch(notesSlice.actions.fetchNotesSuccess(response));
 	} catch (error) {
 		const { message } = error as Error;
@@ -50,6 +51,17 @@ export const addNote = (note: INote) => async (dispatch: AppDispatch) => {
 		dispatch(notesSlice.actions.fetchNotes());
 		await Database.create(note);
 		dispatch(fetchNotes());
+	} catch (error) {
+		const { message } = error as Error;
+		dispatch(notesSlice.actions.fetchNotesError(message));
+	}
+};
+
+export const clearNotes = () => async (dispatch: AppDispatch) => {
+	try {
+		dispatch(notesSlice.actions.fetchNotes());
+		await Database.clear();
+		dispatch(notesSlice.actions.fetchNotesSuccess([]));
 	} catch (error) {
 		const { message } = error as Error;
 		dispatch(notesSlice.actions.fetchNotesError(message));
