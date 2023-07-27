@@ -1,6 +1,6 @@
-import { Stack } from '@mui/material';
+import { Grow, Grid } from '@mui/material';
 import { INote } from '../../models/models';
-import NoteItem from './NoteItem';
+import NoteItem from '../note-item/NoteItem';
 
 interface INoteListProps {
 	notes: INote[];
@@ -8,11 +8,15 @@ interface INoteListProps {
 
 const NoteList: React.FC<INoteListProps> = ({ notes }) => {
 	return (
-		<Stack spacing={2}>
+		<Grid spacing={2} container>
 			{notes.map((note) => (
-				<NoteItem key={note.id} note={note} />
+				<Grow in={true} key={note.id}>
+					<Grid item sm={6} xs={12}>
+						<NoteItem note={note} />
+					</Grid>
+				</Grow>
 			))}
-		</Stack>
+		</Grid>
 	);
 };
 

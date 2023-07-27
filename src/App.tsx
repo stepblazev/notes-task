@@ -6,6 +6,7 @@ import Header from './components/header/Header';
 import { theme } from './theme';
 import NoteList from './components/note-list/NoteList';
 import Loader from './components/_UI/Loader';
+import { ConfirmProvider } from 'material-ui-confirm';
 
 const App: React.FC = () => {
 	const dispatch = useAppDispatch();
@@ -19,10 +20,12 @@ const App: React.FC = () => {
 
 	return (
 		<ThemeProvider theme={theme}>
-			<Header />
-			<Container maxWidth='md' sx={{ padding: 1, pb: '120px' }}>
-				{isNotesLoading ? <Loader /> : <NoteList notes={fitleredNotes} />}
-			</Container>
+			<ConfirmProvider>
+				<Header />
+				<Container maxWidth='md' sx={{ padding: 1, pb: '80px' }}>
+					{isNotesLoading ? <Loader /> : <NoteList notes={fitleredNotes} />}
+				</Container>{' '}
+			</ConfirmProvider>
 		</ThemeProvider>
 	);
 };

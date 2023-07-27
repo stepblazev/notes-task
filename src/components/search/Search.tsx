@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { Stack, Chip, Grow, Typography } from '@mui/material';
+import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
+import { Stack, Chip, Grow, Typography, Tooltip, IconButton } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { filterSlice } from '../../store/filter/filterSlice';
-
 import TagSelector from './TagSelector';
 
 const Search: React.FC = () => {
@@ -18,7 +18,15 @@ const Search: React.FC = () => {
 
 	return (
 		<Stack direction='row' alignItems='center' gap='10px' flexWrap='wrap' padding='10px 0'>
-			{avalibleTags.length > 0 && <TagSelector />}
+			{avalibleTags.length > 0 ? (
+				<TagSelector />
+			) : (
+				<Tooltip title='Очистить фильтр'>
+					<IconButton onClick={() => dispatch(filterSlice.actions.setTags([]))}>
+						<FilterAltOffIcon />
+					</IconButton>
+				</Tooltip>
+			)}
 			{tags.length == 0 && (
 				<Typography variant='body1' component='h6' color='rgba(0, 0, 0, 0.54)'>
 					Фильтрация отключена

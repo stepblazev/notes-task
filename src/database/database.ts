@@ -16,8 +16,8 @@ export default class Database {
 	private static async init(): Promise<IDBPDatabase<NotesDB>> {
 		return openDB<NotesDB>(this.dbName, this.dbVersion, {
 			upgrade(db) {
-				if (!db.objectStoreNames.contains('notesStore')) {
-					db.createObjectStore('notesStore', { keyPath: 'id' });
+				if (!db.objectStoreNames.contains(DATABASE_NAME)) {
+					db.createObjectStore(DATABASE_NAME, { keyPath: 'id' });
 				}
 			},
 		});
@@ -25,36 +25,43 @@ export default class Database {
 
 	public static async getSingle(id: number): Promise<INote | undefined> {
 		const db = await this.init();
-		const tx = db.transaction('notesStore', 'readonly');
-		const store = tx.objectStore('notesStore');
+		const tx = db.transaction(DATABASE_NAME, 'readonly');
+		const store = tx.objectStore(DATABASE_NAME);
 		return store.get(id);
 	}
 
 	public static async getAll(): Promise<INote[]> {
 		const db = await this.init();
-		const tx = db.transaction('notesStore', 'readonly');
-		const store = tx.objectStore('notesStore');
+		const tx = db.transaction(DATABASE_NAME, 'readonly');
+		const store = tx.objectStore(DATABASE_NAME);
 		return store.getAll();
 	}
 
 	public static async create(item: INote): Promise<void> {
 		const db = await this.init();
-		const tx = db.transaction('notesStore', 'readwrite');
-		const store = tx.objectStore('notesStore');
+		const tx = db.transaction(DATABASE_NAME, 'readwrite');
+		const store = tx.objectStore(DATABASE_NAME);
 		await store.add(item);
 	}
 
 	public static async update(item: INote): Promise<void> {
 		const db = await this.init();
-		const tx = db.transaction('notesStore', 'readwrite');
-		const store = tx.objectStore('notesStore');
+		const tx = db.transaction(DATABASE_NAME, 'readwrite');
+		const store = tx.objectStore(DATABASE_NAME);
 		await store.put(item);
 	}
 
 	public static async clear(): Promise<void> {
 		const db = await this.init();
-		const tx = db.transaction('notesStore', 'readwrite');
-		const store = tx.objectStore('notesStore');
+		const tx = db.transaction(DATABASE_NAME, 'readwrite');
+		const store = tx.objectStore(DATABASE_NAME);
 		await store.clear();
+	}
+
+	public static async delete(id: number): Promise<void> {
+		const db = await this.init();
+		const tx = db.transaction(DATABASE_NAME, 'readwrite');
+		const store = tx.objectStore(DATABASE_NAME);
+		await store.delete(id);
 	}
 }

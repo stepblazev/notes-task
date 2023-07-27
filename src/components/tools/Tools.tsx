@@ -5,23 +5,39 @@ import AddIcon from '@mui/icons-material/Add';
 import { INote } from '../../models/models';
 import { useAppDispatch } from '../../hooks/redux';
 import { addNote, clearNotes } from '../../store/notes/notesSlice';
+import { useConfirm } from 'material-ui-confirm';
 
 const Tools: React.FC = () => {
+	const confirm = useConfirm();
 	const dispatch = useAppDispatch();
 
 	const addHandler = () => {
 		const note: INote = {
 			id: Date.now(),
 			topic: 'Testing topic 3',
-			body: 'I need to go to the shop today',
+			body: 'I need to go to the shop today. I need to go to the shop today. I need to go to the shop today. I need to go to the shop today. I need to go to the shop today. I need to go to the shop today. I need to go to the shop today. I need to go to the shop today.',
 			tags: ['shop', 'store', 'money'],
 		};
 		dispatch(addNote(note));
 	};
 
 	const clearHandler = () => {
-		if (!confirm('Удалить все записи?')) return;
-		dispatch(clearNotes());
+		confirm({
+			title: 'Подтверждение действия',
+			description: 'Удалить все записи?',
+			confirmationText: 'Удалить',
+			cancellationText: 'Отменить',
+			buttonOrder: ['confirm', 'cancel'],
+			confirmationButtonProps: {
+				color: 'error',
+			},
+		})
+			.then(() => {
+				dispatch(clearNotes());
+			})
+			.catch(() => {
+				console.log('CANCELED');
+			});
 	};
 
 	return (
