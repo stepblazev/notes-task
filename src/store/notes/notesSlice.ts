@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { INote } from '../../models/models';
 import { AppDispatch } from '../store';
 import Database from '../../database/database';
+import { filterSlice } from '../filter/filterSlice';
 
 interface INotesState {
 	notes: INote[];
@@ -40,6 +41,7 @@ export const fetchNotes = () => async (dispatch: AppDispatch) => {
 		const response = await Database.getAll();
 		response.reverse();
 		dispatch(notesSlice.actions.fetchNotesSuccess(response));
+		dispatch(filterSlice.actions.setAvalibleTags(response));
 	} catch (error) {
 		const { message } = error as Error;
 		dispatch(notesSlice.actions.fetchNotesError(message));
