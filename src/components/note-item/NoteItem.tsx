@@ -19,14 +19,14 @@ interface INoteItemProps {
 }
 
 const NoteItem: React.FC<INoteItemProps> = ({ note }) => {
-	const [isOpened, setIsOpened] = useState<boolean>(false);
+	const [isOpened, setIsOpened] = useState<boolean>(true);
 
 	return (
 		<Card variant='outlined'>
 			<CardContent sx={{ pb: 0, position: 'relative' }}>
 				<NoteItemMenu note={note} />
 				<Typography variant='h6' component='h3' gutterBottom>
-					{note.topic}
+					{note.topic || 'Без названия'}
 				</Typography>
 				<Stack direction='row' gap={1} mb={1}>
 					{note.tags.map((tag) => (
@@ -35,7 +35,7 @@ const NoteItem: React.FC<INoteItemProps> = ({ note }) => {
 				</Stack>
 				<Collapse in={isOpened}>
 					<Typography variant='body2' component='p'>
-						{note.body}
+						{note.body || 'Содержание отсутствует'}
 					</Typography>
 				</Collapse>
 			</CardContent>

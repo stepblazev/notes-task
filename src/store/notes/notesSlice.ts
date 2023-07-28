@@ -68,6 +68,16 @@ export const deleteNote = (id: number) => async (dispatch: AppDispatch) => {
 	}
 };
 
+export const updateNote = (note: INote) => async (dispatch: AppDispatch) => {
+	try {
+		await Database.update(note);
+		dispatch(fetchNotes());
+	} catch (error) {
+		const { message } = error as Error;
+		dispatch(notesSlice.actions.fetchNotesError(message));
+	}
+};
+
 export const clearNotes = () => async (dispatch: AppDispatch) => {
 	try {
 		dispatch(notesSlice.actions.fetchNotes());

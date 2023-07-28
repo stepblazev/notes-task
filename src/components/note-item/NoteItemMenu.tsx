@@ -1,4 +1,13 @@
-import { IconButton, Menu, MenuItem, ListItemIcon, ListItemText, Modal } from '@mui/material';
+import {
+	IconButton,
+	Menu,
+	MenuItem,
+	ListItemIcon,
+	ListItemText,
+	Modal,
+	Box,
+	Fade,
+} from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState, useRef } from 'react';
 import { INote } from '../../models/models';
@@ -8,6 +17,7 @@ import { useConfirm } from 'material-ui-confirm';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditForm from '../edit-form/EditForm';
+import { deleteConfirmTemplate } from '../../templates/deleteConfirm';
 
 interface INoteItemMenuProps {
 	note: INote;
@@ -26,23 +36,12 @@ const NoteItemMenu: React.FC<INoteItemMenuProps> = ({ note }) => {
 	};
 
 	const deleteHandler = () => {
-		confirm({
-			title: 'Подтверждение действия',
-			description: `Удалить запись с темой "${note.topic}"?`,
-			confirmationText: 'Удалить',
-			cancellationText: 'Отменить',
-			buttonOrder: ['confirm', 'cancel'],
-			confirmationButtonProps: {
-				color: 'error',
-			},
-		})
-			.then(() => {
-				dispatch(deleteNote(note.id));
-			})
-			.catch(() => {
-				console.log('CANCELED');
-			});
+		confirm(deleteConfirmTemplate(`Удалить запись с темой "${note.topic}"?`))
+			.then(() => dispatch(deleteNote(note.id)))
+			.catch(() => {});
 	};
+
+	const closeModal = () => setIsEditOpened(false);
 
 	return (
 		<>
@@ -71,8 +70,12 @@ const NoteItemMenu: React.FC<INoteItemMenuProps> = ({ note }) => {
 					<ListItemText>Удалить</ListItemText>
 				</MenuItem>
 			</Menu>
-			<Modal open={isEditOpened} onClose={() => setIsEditOpened(false)}>
-				<EditForm note={note} />
+			<Modal open={isEditOpened} onClose={closeModal}>
+				<Fade in={isEditOpened}>
+					<Box>
+						<EditForm note={note} closeModal={closeModal} />
+					</Box>
+				</Fade>
 			</Modal>
 		</>
 	);
