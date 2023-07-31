@@ -5,15 +5,15 @@ import AddIcon from '@mui/icons-material/Add';
 import { useAppDispatch } from '../../hooks/redux';
 import { addNote, clearNotes } from '../../store/notes/notesSlice';
 import { useConfirm } from 'material-ui-confirm';
-import { deleteConfirmTemplate } from '../../templates/deleteConfirm';
-import { startNoteTemplate } from '../../templates/startNote';
+import { deleteConfirmTemplate } from '../../utils/templates';
+import { startNoteTemplate } from '../../utils/templates';
 
 const Tools: React.FC = () => {
 	const confirm = useConfirm();
 	const dispatch = useAppDispatch();
 
 	const addHandler = () => {
-		dispatch(addNote(startNoteTemplate));
+		dispatch(addNote({ id: Date.now(), ...startNoteTemplate }));
 	};
 
 	const clearHandler = () => {
@@ -24,7 +24,13 @@ const Tools: React.FC = () => {
 
 	return (
 		<Container
-			sx={{ position: 'fixed', bottom: 0, left: '50%', transform: 'translateX(-50%)' }}
+			sx={{
+				position: 'fixed',
+				bottom: 0,
+				left: '50%',
+				transform: 'translateX(-50%)',
+				zIndex: 20,
+			}}
 		>
 			<SpeedDial
 				ariaLabel='Tools'

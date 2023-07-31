@@ -16,13 +16,10 @@ import { INote } from '../../models/models';
 import { useAppDispatch } from '../../hooks/redux';
 import { updateNote } from '../../store/notes/notesSlice';
 import { NOTE_BODY_LENGTH } from '../../../config';
-
-interface IEditFormProps {
-	note: INote;
-	closeModal: () => any;
-}
+import { extractTagsFromLine, removeTagFromLine } from '../../utils/functions';
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
+	width: '500px',
 	position: 'absolute',
 	top: '50%',
 	left: '50%',
@@ -35,18 +32,19 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 const StyledTextArea = styled(TextareaAutosize)(({ theme }) => ({
 	display: 'block',
 	padding: '10px',
-	minWidth: '400px',
+	width: 'calc(100% - 20px)',
 	minHeight: '200px',
-	border: '2px solid',
+	border: '1.5px solid',
 	resize: 'none',
 	borderRadius: '5px',
 	borderColor: theme.palette.primary['main'],
 	outline: 'none',
-	[theme.breakpoints.down('sm')]: {
-		width: 'calc(100% - 20px)',
-		minWidth: 'auto',
-	},
 }));
+
+interface IEditFormProps {
+	note: INote;
+	closeModal: () => any;
+}
 
 const EditForm: React.FC<IEditFormProps> = ({ note, closeModal }) => {
 	const dispatch = useAppDispatch();
@@ -65,14 +63,21 @@ const EditForm: React.FC<IEditFormProps> = ({ note, closeModal }) => {
 	const changeTopicHandler = (e: ChangeEvent<HTMLInputElement>) => {
 		setLocalNote((prev) => ({ ...prev, topic: e.target.value }));
 	};
+
 	const deleteTag = (tag: string) => {
-		setLocalNote((prev) => ({ ...prev, tags: prev.tags.filter((t) => t !== tag) }));
+		const body: string = removeTagFromLine(localNote.body, tag);
+		setLocalNote((prev) => ({ ...prev, body, tags: prev.tags.filter((t) => t !== tag) }));
 	};
+
 	const changeBodyHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-		setLocalNote((prev) => ({ ...prev, body: e.target.value }));
+		const body: string = e.target.value;
+		const tags: string[] = extractTagsFromLine(body) ?? [];
+		setLocalNote((prev) => ({ ...prev, body, tags }));
 	};
+
 	const saveHandler = () => {
-		dispatch(updateNote(localNote));
+		const tags: string[] = extractTagsFromLine(localNote.body) ?? [];
+		dispatch(updateNote({ ...localNote, tags }));
 		closeModal();
 	};
 
@@ -90,7 +95,7 @@ const EditForm: React.FC<IEditFormProps> = ({ note, closeModal }) => {
 					onChange={changeTopicHandler}
 					sx={{ mb: '10px' }}
 				/>
-				<Stack direction='row' gap='10px' sx={{ mb: '10px', flexWrap: 'wrap' }}>
+				<Stack direction='row' gap='10px' flexWrap='wrap' sx={{ mb: '10px' }}>
 					{localNote.tags.map((tag) => (
 						<Chip
 							key={tag}

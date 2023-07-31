@@ -17,7 +17,7 @@ import { useConfirm } from 'material-ui-confirm';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditForm from '../edit-form/EditForm';
-import { deleteConfirmTemplate } from '../../templates/deleteConfirm';
+import { deleteConfirmTemplate } from '../../utils/templates';
 
 interface INoteItemMenuProps {
 	note: INote;

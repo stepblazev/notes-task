@@ -28,7 +28,7 @@ const NoteItem: React.FC<INoteItemProps> = ({ note }) => {
 				<Typography variant='h6' component='h3' gutterBottom>
 					{note.topic || 'Без названия'}
 				</Typography>
-				<Stack direction='row' gap={1} mb={1}>
+				<Stack direction='row' gap={1} mb={1} flexWrap='wrap'>
 					{note.tags.map((tag) => (
 						<Chip key={tag} label={tag} color='primary' size='small' />
 					))}
