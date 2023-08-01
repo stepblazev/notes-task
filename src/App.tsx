@@ -7,6 +7,7 @@ import { theme } from './theme';
 import NoteList from './components/note-list/NoteList';
 import Loader from './components/_UI/Loader';
 import { ConfirmProvider } from 'material-ui-confirm';
+import EmptyList from './components/empty-list/EmptyList';
 
 const App: React.FC = () => {
 	const dispatch = useAppDispatch();
@@ -23,8 +24,14 @@ const App: React.FC = () => {
 			<ConfirmProvider>
 				<Header />
 				<Container maxWidth='md' sx={{ padding: 1, pb: '80px' }}>
-					{isNotesLoading ? <Loader /> : <NoteList notes={fitleredNotes} />}
-				</Container>{' '}
+					{isNotesLoading ? (
+						<Loader />
+					) : fitleredNotes.length ? (
+						<NoteList notes={fitleredNotes} />
+					) : (
+						<EmptyList />
+					)}
+				</Container>
 			</ConfirmProvider>
 		</ThemeProvider>
 	);

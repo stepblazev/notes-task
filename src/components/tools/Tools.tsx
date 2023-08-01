@@ -7,6 +7,7 @@ import { addNote, clearNotes } from '../../store/notes/notesSlice';
 import { useConfirm } from 'material-ui-confirm';
 import { deleteConfirmTemplate } from '../../utils/templates';
 import { startNoteTemplate } from '../../utils/templates';
+import TopicSearch from '../topic-search/TopicSearch';
 
 const Tools: React.FC = () => {
 	const confirm = useConfirm();
@@ -32,6 +33,7 @@ const Tools: React.FC = () => {
 				zIndex: 20,
 			}}
 		>
+			<TopicSearch />
 			<SpeedDial
 				ariaLabel='Tools'
 				sx={{ position: 'absolute', bottom: 16, right: 16 }}

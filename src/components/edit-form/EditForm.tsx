@@ -16,7 +16,11 @@ import { INote } from '../../models/models';
 import { useAppDispatch } from '../../hooks/redux';
 import { updateNote } from '../../store/notes/notesSlice';
 import { NOTE_BODY_LENGTH } from '../../../config';
-import { extractTagsFromLine, removeTagFromLine } from '../../utils/functions';
+import {
+	extractTagsFromLine,
+	getUniqueArrayValues,
+	removeTagFromLine,
+} from '../../utils/functions';
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
 	width: '500px',
@@ -38,6 +42,7 @@ const StyledTextArea = styled(TextareaAutosize)(({ theme }) => ({
 	resize: 'none',
 	borderRadius: '5px',
 	borderColor: theme.palette.primary['main'],
+	fontSize: '16px',
 	outline: 'none',
 }));
 
@@ -71,20 +76,20 @@ const EditForm: React.FC<IEditFormProps> = ({ note, closeModal }) => {
 
 	const changeBodyHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		const body: string = e.target.value;
-		const tags: string[] = extractTagsFromLine(body) ?? [];
+		let tags: string[] = extractTagsFromLine(body) ?? [];
+		tags = getUniqueArrayValues<string>(tags);
 		setLocalNote((prev) => ({ ...prev, body, tags }));
 	};
 
 	const saveHandler = () => {
-		const tags: string[] = extractTagsFromLine(localNote.body) ?? [];
-		dispatch(updateNote({ ...localNote, tags }));
+		dispatch(updateNote(localNote));
 		closeModal();
 	};
 
 	return (
 		<StyledPaper variant='elevation' elevation={10}>
 			<CardContent>
-				<Typography variant='h5' gutterBottom>
+				<Typography variant='h5' sx={{ mb: '20px' }}>
 					Редактирование заметки
 				</Typography>
 				<TextField
@@ -114,7 +119,7 @@ const EditForm: React.FC<IEditFormProps> = ({ note, closeModal }) => {
 			</CardContent>
 			<CardActions sx={{ justifyContent: 'end' }}>
 				{showSave && (
-					<Button color='success' startIcon={<SaveIcon />} onClick={saveHandler}>
+					<Button color='info' startIcon={<SaveIcon />} onClick={saveHandler}>
 						Сохранить
 					</Button>
 				)}

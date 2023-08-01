@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { filterSlice } from '../../store/filter/filterSlice';
 import TagSelector from './TagSelector';
 
-const Search: React.FC = () => {
+const TagSearch: React.FC = () => {
 	const dispatch = useAppDispatch();
 
 	const { notes } = useAppSelector((state) => state.notes);
@@ -47,4 +47,4 @@ const Search: React.FC = () => {
 	);
 };
 
-export default Search;
+export default TagSearch;

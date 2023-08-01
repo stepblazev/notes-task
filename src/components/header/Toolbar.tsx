@@ -1,11 +1,11 @@
 import { Toolbar } from '@mui/material';
-import Search from '../search/Search';
 import Tools from '../tools/Tools';
+import TagSearch from '../tag-search/TagSearch';
 
 const StyledToolbar: React.FC = () => {
 	return (
 		<Toolbar disableGutters>
-			<Search />
+			<TagSearch />
 			<Tools />
 		</Toolbar>
 	);
