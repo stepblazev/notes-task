@@ -33,7 +33,7 @@ const Tools: React.FC = () => {
 				zIndex: 20,
 			}}
 		>
-			<TopicSearch />
+			{/* <TopicSearch /> */}
 			<SpeedDial
 				ariaLabel='Tools'
 				sx={{ position: 'absolute', bottom: 16, right: 16 }}
